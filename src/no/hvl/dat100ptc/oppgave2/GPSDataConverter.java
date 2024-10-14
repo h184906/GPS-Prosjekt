@@ -1,6 +1,5 @@
 package no.hvl.dat100ptc.oppgave2;
 
-import no.hvl.dat100ptc.TODO;
 import no.hvl.dat100ptc.oppgave1.GPSPoint;
 
 public class GPSDataConverter {
@@ -12,19 +11,28 @@ public class GPSDataConverter {
 		
 		int secs;
 		int hr, min, sec;
+
+		String tiden = timestr.substring(TIME_STARTINDEX, 19);
+
+		String[] splittet = tiden.split(":");
 		
-		// TODO
-		throw new UnsupportedOperationException(TODO.method());
+		hr = Integer.parseInt(splittet[0]);
+		min = Integer.parseInt(splittet[1]);
+		sec = Integer.parseInt(splittet[2]);
+
+		secs = sec + min*60 + hr*3600;
+
+		return secs;
 		
 	}
 
 	public static GPSPoint convert(String timeStr, String latitudeStr, String longitudeStr, String elevationStr) {
+		double latituden = Double.parseDouble(latitudeStr);
+		double lonituden = Double.parseDouble(longitudeStr);
+		double elevationen = Double.parseDouble(elevationStr);
 
-		GPSPoint gpspoint;
-
-		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
-		
+		GPSPoint gpspoint = new GPSPoint(toSeconds(timeStr), latituden, lonituden, elevationen);
+		return gpspoint;
 	}
 	
 }
