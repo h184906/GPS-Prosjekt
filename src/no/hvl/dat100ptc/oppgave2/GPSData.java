@@ -10,9 +10,9 @@ public class GPSData {
 
 	public GPSData(int antall) {
 
+		
 		throw new UnsupportedOperationException(TODO.method());
 		
-		// TODO
 	}
 
 	public GPSPoint[] getGPSPoints() {
