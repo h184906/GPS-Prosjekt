@@ -2,11 +2,9 @@ package no.hvl.dat100ptc.oppgave4;
 
 import no.hvl.dat100ptc.oppgave1.GPSPoint;
 import no.hvl.dat100ptc.oppgave2.GPSData;
-import no.hvl.dat100ptc.oppgave2.GPSDataConverter;
 import no.hvl.dat100ptc.oppgave2.GPSDataFileReader;
 import no.hvl.dat100ptc.oppgave3.GPSUtils;
 
-import no.hvl.dat100ptc.TODO;
 
 public class GPSComputer {
 	
@@ -31,26 +29,46 @@ public class GPSComputer {
 
 		double distance = 0;
 
-		throw new UnsupportedOperationException(TODO.method());
+		for (int i = 1; i < gpspoints.length; i++) {
+			distance += GPSUtils.distance(gpspoints[i-1],gpspoints[i]);
+		}
 
-		// TODO
-
+		return distance;
 	}
 
 	public double totalElevation() {
 
 		double elevation = 0;
+		double forgjeElevation = gpspoints[0].getElevation();
 
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO 
+		for (int i = 1; i < gpspoints.length; i++) {
+			double nåværendeElevation = gpspoints[i].getElevation();
+
+			if (forgjeElevation < nåværendeElevation) {
+				elevation += nåværendeElevation - forgjeElevation;
+
+			}
+
+			forgjeElevation = nåværendeElevation;
+			
+		}
+
+		return elevation;
 		
 	}
 
 	public int totalTime() {
 
-		// TODO
-		throw new UnsupportedOperationException(TODO.method());
+		int totalTiden = 0;
+
+		for (int i = 1; i < gpspoints.length; i++) {
+			int tidenNå = gpspoints[i].getTime();
+        	int tidenForrige = gpspoints[i - 1].getTime();
+
+			totalTiden += tidenNå - tidenForrige;
+		}
+
+		return totalTiden;
 		
 	}
 		
@@ -58,28 +76,35 @@ public class GPSComputer {
 	public double[] speeds() {
 
 		double[] speeds = new double[gpspoints.length-1];
-		
-		// TODO
-		throw new UnsupportedOperationException(TODO.method());
+
+		for (int i = 1; i < gpspoints.length; i++) {
+			speeds[i-1] = GPSUtils.speed(gpspoints[i-1], gpspoints[i]);
+		}
+
+
+		return speeds;
 		
 	}
 	
 	public double maxSpeed() {
 		
 		double maxspeed = 0;
-		
-		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
+		double[] fartArray = speeds();
+
+		for (double c : fartArray) {
+			if (maxspeed < c) {
+				maxspeed = c;
+			}
+		}
+
+		return maxspeed;
 	
 	}
 
 	public double averageSpeed() {
 
-		double average = 0;
-		
-		// TODO
-		throw new UnsupportedOperationException(TODO.method());
-		
+		return totalDistance()/totalTime();
+
 	}
 
 
@@ -90,29 +115,68 @@ public class GPSComputer {
 
 		double kcal;
 
-		double met = 0;		
+		double met;		
 		double speedmph = speed * MS;
 
-		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
+		if (speedmph > 20.0) {
+			met = 16.0;
+		} else if (speedmph >= 16) {
+			met = 12.0;
+		} else if (speedmph >= 14) {
+			met = 10.0;
+		} else if (speedmph >= 12) {
+			met = 8.0;
+		} else if (speedmph >= 10) {
+			met = 6.0;
+		} else {
+			met = 4.0;
+		}
+		
+		kcal = met * weight * ((double) secs / 3600);
+
+		return kcal;
 		
 	}
 
 	public double totalKcal(double weight) {
-
 		double totalkcal = 0;
 
-		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
-		
+		// double speed = averageSpeed();
+		// int secs = totalTime();
+		// totalkcal = kcal(weight, secs, speed);
+	
+		for (int i = 1; i < gpspoints.length; i++) {
+
+			int secs = (gpspoints[i].getTime()) - (gpspoints[i - 1].getTime()); 
+
+			double speed = GPSUtils.speed(gpspoints[i-1], gpspoints[i]);
+			
+			totalkcal += kcal(weight, secs, speed); 
+		}
+	
+		return totalkcal;
+
 	}
+	
 	
 	private static double WEIGHT = 80.0;
 	
 	public void displayStatistics() {
+		String totalTid = GPSUtils.formatTime(totalTime());
+		double totaleDistansen = totalDistance();
+		double totaleElevation = totalElevation();
+		double maxFart = maxSpeed();
+		double avgSpeed = averageSpeed();
+		double totalKalorier = totalKcal(WEIGHT);
 
-		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
+		System.out.println("==============================================");
+		System.out.printf("Total Time      : %11s\n", totalTid);
+		System.out.printf("Total distance  : %11.2f km\n", totaleDistansen);
+		System.out.printf("Total elevation : %11.2f m\n", totaleElevation);
+		System.out.printf("Max speed       : %11.2f km/t\n", maxFart);
+		System.out.printf("Average speed   : %11.2f km/t\n", avgSpeed);
+		System.out.printf("Energy          : %11.2f kcal\n", totalKalorier);
+		System.out.println("==============================================");
 		
 	}
 
