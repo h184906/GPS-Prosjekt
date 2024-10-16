@@ -163,10 +163,10 @@ public class GPSComputer {
 	
 	public void displayStatistics() {
 		String totalTid = GPSUtils.formatTime(totalTime());
-		double totaleDistansen = totalDistance();
+		double totaleDistansen = totalDistance()/1000;
 		double totaleElevation = totalElevation();
-		double maxFart = maxSpeed();
-		double avgSpeed = averageSpeed();
+		double maxFart = maxSpeed()*3.6;
+		double avgSpeed = averageSpeed()*3.6;
 		double totalKalorier = totalKcal(WEIGHT);
 
 		System.out.println("==============================================");
