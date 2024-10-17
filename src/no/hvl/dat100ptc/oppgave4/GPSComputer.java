@@ -160,24 +160,36 @@ public class GPSComputer {
 	
 	
 	private static double WEIGHT = 80.0;
+
+	public String[] statestikkArray() {
+		String[] array = new String[6];
+	
+		String totalTid = GPSUtils.formatTime(totalTime());
+		double totaleDistansen = totalDistance() / 1000;
+		double totaleElevation = totalElevation();
+		double maxFart = maxSpeed() * 3.6;
+		double avgSpeed = averageSpeed() * 3.6;
+		double totalKalorier = totalKcal(WEIGHT);
+	
+		array[0] = String.format("Total Time      : %11s", totalTid);
+		array[1] = String.format("Total distance  : %11.2f km", totaleDistansen);
+		array[2] = String.format("Total elevation : %11.2f m", totaleElevation);
+		array[3] = String.format("Max speed       : %11.2f km/t", maxFart);
+		array[4] = String.format("Average speed   : %11.2f km/t", avgSpeed);
+		array[5] = String.format("Energy          : %11.2f kcal", totalKalorier);
+	
+		return array;
+	}
 	
 	public void displayStatistics() {
-		String totalTid = GPSUtils.formatTime(totalTime());
-		double totaleDistansen = totalDistance()/1000;
-		double totaleElevation = totalElevation();
-		double maxFart = maxSpeed()*3.6;
-		double avgSpeed = averageSpeed()*3.6;
-		double totalKalorier = totalKcal(WEIGHT);
-
-		System.out.println("==============================================");
-		System.out.printf("Total Time      : %11s\n", totalTid);
-		System.out.printf("Total distance  : %11.2f km\n", totaleDistansen);
-		System.out.printf("Total elevation : %11.2f m\n", totaleElevation);
-		System.out.printf("Max speed       : %11.2f km/t\n", maxFart);
-		System.out.printf("Average speed   : %11.2f km/t\n", avgSpeed);
-		System.out.printf("Energy          : %11.2f kcal\n", totalKalorier);
-		System.out.println("==============================================");
+		String[] statistics = statestikkArray();
 		
+		System.out.println("==============================================");
+		for (String line : statistics) {
+			System.out.println(line);
+		}
+		System.out.println("==============================================");
 	}
+	
 
 }

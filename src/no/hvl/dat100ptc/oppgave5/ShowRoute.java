@@ -50,7 +50,7 @@ public class ShowRoute extends EasyGraphics {
 		
 		showRouteMap(MARGIN + MAPYSIZE);
 
-		replayRoute(MARGIN + MAPYSIZE);
+		// replayRoute(MARGIN + MAPYSIZE);
 		
 		showStatistics();
 	}
@@ -63,29 +63,49 @@ public class ShowRoute extends EasyGraphics {
 	}
 
 	public void showRouteMap(int ybase) {
+		int radius = 4;
+		double[] latitudeArray = GPSUtils.getLatitudes(gpspoints);
+		double[] longitudeArray = GPSUtils.getLongitudes(gpspoints);
 
-		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
+		for (int i = 0; i < gpspoints.length; i ++) {
+			
+			int x = MARGIN + (int) ((longitudeArray[i] - minlon) * xstep);
+			int y = ybase - (int) ((latitudeArray[i] - minlat) * ystep);
+
+			setColor(0, 240, 0);
+			fillCircle(x, y, radius);
+		}
 		
 	}
 
 	public void showStatistics() {
 
 		int TEXTDISTANCE = 20;
+		String[] strengArray = gpscomputer.statestikkArray();
+		int gapNed = 20;
 
 		setColor(0,0,0);
 		setFont("Courier",12);
 		
-		// TODO
-		throw new UnsupportedOperationException(TODO.method());
-		
+		drawString("==============================================",TEXTDISTANCE, gapNed);
+
+		for (int i = 0; i < gpscomputer.statestikkArray().length; i++) {
+			gapNed += 15;
+			drawString(strengArray[i], TEXTDISTANCE, gapNed);
+		}
+		gapNed += 15;
+
+		drawString("==============================================", TEXTDISTANCE, gapNed);
 	}
 
 	public void replayRoute(int ybase) {
-
-		// TODO 
-		throw new UnsupportedOperationException(TODO.method());
 		
+		int r = 6;
+
+		fillCircle(x, y, r);
+
+		setColor(255, 0, 0);
+
 	}
 
 }

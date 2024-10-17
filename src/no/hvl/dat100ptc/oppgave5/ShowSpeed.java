@@ -3,12 +3,7 @@ package no.hvl.dat100ptc.oppgave5;
 import javax.swing.JOptionPane;
 
 import easygraphics.EasyGraphics;
-import no.hvl.dat100ptc.oppgave1.GPSPoint;
-import no.hvl.dat100ptc.oppgave2.GPSData;
-import no.hvl.dat100ptc.oppgave2.GPSDataFileReader;
-import no.hvl.dat100ptc.oppgave3.GPSUtils;
 import no.hvl.dat100ptc.oppgave4.GPSComputer;
-import no.hvl.dat100ptc.TODO;
 
 public class ShowSpeed extends EasyGraphics {
 			
@@ -39,10 +34,20 @@ public class ShowSpeed extends EasyGraphics {
 	
 	public void showSpeedProfile(int ybase) {
 		
-		int x = MARGIN,y;
-	
-		// TODO
-		throw new UnsupportedOperationException(TODO.method());
+		int x = MARGIN;
+
+		setColor(0, 150, 50);
+
+		double [] fartArray = gpscomputer.speeds();
+
+		for (int i = 0; i < fartArray.length; i++) {
+			double punktHøyde = fartArray[i];
+
+			drawLine(x, ybase, x, (ybase - (int) punktHøyde));
+			x += 2;
+		}
 		
+		setColor(255, 0, 0);  
+		drawLine(MARGIN, ybase - (int) gpscomputer.averageSpeed(), MARGIN + 2 * fartArray.length, ybase - (int) gpscomputer.averageSpeed());
 	}
 }
