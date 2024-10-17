@@ -68,6 +68,7 @@ public class ShowRoute extends EasyGraphics {
 		double[] longitudeArray = GPSUtils.getLongitudes(gpspoints);
 	
 		for (int i = 0; i < gpspoints.length; i++) {
+
 			int x = MARGIN + (int) ((longitudeArray[i] - minlon) * xstep);
 			int y = ybase - (int) ((latitudeArray[i] - minlat) * ystep);
 	
@@ -75,14 +76,25 @@ public class ShowRoute extends EasyGraphics {
 			fillCircle(x, y, radius);
 	
 			if (i > 0) {
+				
 				int prevX = MARGIN + (int) ((longitudeArray[i - 1] - minlon) * xstep);
 				int prevY = ybase - (int) ((latitudeArray[i - 1] - minlat) * ystep);
-
-				setColor(137, 137, 137); 
+	
+				double elevationChange = gpspoints[i].getElevation() - gpspoints[i - 1].getElevation();
+	
+				if (elevationChange > 0) {
+					setColor(0, 255, 0); 
+				} else {
+					setColor(255, 0, 0); 
+				}
+	
 				drawLine(prevX, prevY, x, y);
+				fillCircle(x, y, radius);
 			}
 		}
 	}
+	
+	
 	
 
 	public void showStatistics() {

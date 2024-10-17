@@ -191,5 +191,25 @@ public class GPSComputer {
 		System.out.println("==============================================");
 	}
 	
+	public double[] climbs() {
+        double[] climbs = new double[gpspoints.length - 1];
+        for (int i = 1; i < gpspoints.length; i++) {
+            double elevationEndring = gpspoints[i].getElevation() - gpspoints[i - 1].getElevation();
+            double distanse = GPSUtils.distance(gpspoints[i - 1], gpspoints[i]);
+            climbs[i - 1] = (elevationEndring / distanse) * 100;
+        }
+        return climbs;
+    }
+
+    public double maxClimb() {
+        double maxClimb = 0;
+        double[] climbArray = climbs();
+        for (double climb : climbArray) {
+            if (climb > maxClimb) {
+                maxClimb = climb;
+            }
+        }
+        return maxClimb;
+    }
 
 }
