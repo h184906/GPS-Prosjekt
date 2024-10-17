@@ -7,7 +7,6 @@ import no.hvl.dat100ptc.oppgave1.GPSPoint;
 import no.hvl.dat100ptc.oppgave3.GPSUtils;
 import no.hvl.dat100ptc.oppgave4.GPSComputer;
 
-import no.hvl.dat100ptc.TODO;
 
 public class ShowRoute extends EasyGraphics {
 
@@ -50,7 +49,7 @@ public class ShowRoute extends EasyGraphics {
 		
 		showRouteMap(MARGIN + MAPYSIZE);
 
-		// replayRoute(MARGIN + MAPYSIZE);
+		replayRoute(MARGIN + MAPYSIZE);
 		
 		showStatistics();
 	}
@@ -63,30 +62,38 @@ public class ShowRoute extends EasyGraphics {
 	}
 
 	public void showRouteMap(int ybase) {
-		int radius = 4;
+
+		int radius = 5;
 		double[] latitudeArray = GPSUtils.getLatitudes(gpspoints);
 		double[] longitudeArray = GPSUtils.getLongitudes(gpspoints);
-
-		for (int i = 0; i < gpspoints.length; i ++) {
-			
+	
+		for (int i = 0; i < gpspoints.length; i++) {
 			int x = MARGIN + (int) ((longitudeArray[i] - minlon) * xstep);
 			int y = ybase - (int) ((latitudeArray[i] - minlat) * ystep);
-
-			setColor(0, 240, 0);
+	
+			setColor(137, 137, 137);
 			fillCircle(x, y, radius);
+	
+			if (i > 0) {
+				int prevX = MARGIN + (int) ((longitudeArray[i - 1] - minlon) * xstep);
+				int prevY = ybase - (int) ((latitudeArray[i - 1] - minlat) * ystep);
+
+				setColor(137, 137, 137); 
+				drawLine(prevX, prevY, x, y);
+			}
 		}
-		
 	}
+	
 
 	public void showStatistics() {
 
-		int TEXTDISTANCE = 20;
 		String[] strengArray = gpscomputer.statestikkArray();
+		int TEXTDISTANCE = 20;
 		int gapNed = 20;
+
 
 		setColor(0,0,0);
 		setFont("Courier",12);
-		
 		drawString("==============================================",TEXTDISTANCE, gapNed);
 
 		for (int i = 0; i < gpscomputer.statestikkArray().length; i++) {
@@ -99,13 +106,29 @@ public class ShowRoute extends EasyGraphics {
 	}
 
 	public void replayRoute(int ybase) {
+
+		setSpeed(10);
+
+		double[] longitudeArray = GPSUtils.getLongitudes(gpspoints);
+		double[] latitudeArray = GPSUtils.getLatitudes(gpspoints);
 		
-		int r = 6;
+		int radius = 7;
+		int x = MARGIN + (int) ((longitudeArray[0] - minlon) * xstep);
+		int y = ybase - (int) ((latitudeArray[0] - minlat) * ystep);
 
-		fillCircle(x, y, r);
+		setColor(210, 0, 0);
+		int sirkel = fillCircle(x, y, radius);
+	
+	
+		for (int i = 1; i < gpspoints.length; i++) {
+			int nextX = MARGIN + (int) ((longitudeArray[i] - minlon) * xstep);
+			int nextY = ybase - (int) ((latitudeArray[i] - minlat) * ystep);
 
-		setColor(255, 0, 0);
-
+			moveCircle(sirkel, nextX, nextY);
+			pause(100); 
+		}
 	}
+	
+	
 
 }
