@@ -76,13 +76,13 @@ public class ShowRoute extends EasyGraphics {
 			fillCircle(x, y, radius);
 	
 			if (i > 0) {
-				
+
 				int prevX = MARGIN + (int) ((longitudeArray[i - 1] - minlon) * xstep);
 				int prevY = ybase - (int) ((latitudeArray[i - 1] - minlat) * ystep);
 	
-				double elevationChange = gpspoints[i].getElevation() - gpspoints[i - 1].getElevation();
+				double elevationEndring = gpspoints[i].getElevation() - gpspoints[i - 1].getElevation();
 	
-				if (elevationChange > 0) {
+				if (elevationEndring > 0) {
 					setColor(0, 255, 0); 
 				} else {
 					setColor(255, 0, 0); 
@@ -128,7 +128,7 @@ public class ShowRoute extends EasyGraphics {
 		int x = MARGIN + (int) ((longitudeArray[0] - minlon) * xstep);
 		int y = ybase - (int) ((latitudeArray[0] - minlat) * ystep);
 
-		setColor(210, 0, 0);
+		setColor(60, 60, 250);
 		int sirkel = fillCircle(x, y, radius);
 	
 	
