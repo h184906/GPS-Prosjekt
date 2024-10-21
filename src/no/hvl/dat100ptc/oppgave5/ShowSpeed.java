@@ -21,7 +21,7 @@ public class ShowSpeed extends EasyGraphics {
 	
 	public static void main(String[] args) {
 		launch(args);
-	}
+	} 
 
 	public void run() {
 
@@ -29,10 +29,10 @@ public class ShowSpeed extends EasyGraphics {
 				2 * MARGIN + 
 				2 * gpscomputer.speeds().length, 2 * MARGIN + BARHEIGHT);
 		
-		showSpeedProfile(MARGIN + BARHEIGHT);
+		showSpeedProfile(MARGIN + BARHEIGHT, gpscomputer);
 	}
 	
-	public void showSpeedProfile(int ybase) {
+	public void showSpeedProfile(int ybase, GPSComputer gpscomputer) {
 		
 		int x = MARGIN;
 
@@ -41,13 +41,13 @@ public class ShowSpeed extends EasyGraphics {
 		double [] fartArray = gpscomputer.speeds();
 
 		for (int i = 0; i < fartArray.length; i++) {
-			double punktHøyde = fartArray[i];
+			double punktHøyde = fartArray[i]*5;
 
 			drawLine(x, ybase, x, (ybase - (int) punktHøyde));
 			x += 2;
 		}
 		
 		setColor(255, 0, 0);  
-		drawLine(MARGIN, ybase - (int) gpscomputer.averageSpeed(), MARGIN + 2 * fartArray.length, ybase - (int) gpscomputer.averageSpeed());
+		drawLine(MARGIN, ybase - (int) gpscomputer.averageSpeed()*5, MARGIN + 2 * fartArray.length, ybase - (int) gpscomputer.averageSpeed()*5);
 	}
 }
